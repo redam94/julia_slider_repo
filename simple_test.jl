@@ -63,12 +63,16 @@ md"$(trend_weight) tw = $(tw)"
 # ╔═╡ e1a40733-cc33-4b88-9b5d-ad384e7dd39e
 md"$(constant) c = $(c)"
 
+# ╔═╡ 9090b3ab-08ad-41e0-a14a-09b628ddbcbe
+t = 0:1:155;
+
+# ╔═╡ 88914b17-0ca9-42df-bb45-749444917305
+noise = rand(Normal(0, .02), length(t));
+
 # ╔═╡ 811af22c-a9f7-45ff-84ec-4e610d5e2d01
 let
-	t = 0:1:155
 	season =  sum([w .* sin.(f*2*π*t / 52.18) for (w, f) in [(s1, 1), (s2, 2), (s3, 3)]
 	])
-	noise = rand(Normal(0, .02), length(t))
 	covar = .2 .* t ./ 52 .+ rand(Normal(0, .1), length(t)) .- .2 .* season
 	obs_covar = exp.(covar)
 	y = exp.(sw .* season .+ tw .* t ./ 52.0 .+ c .+ noise .+ .2 * covar)
@@ -77,25 +81,23 @@ let
 	plot(sc, pl)
 end
 
-# ╔═╡ 180cea24-d49d-425b-872b-cf4861410627
-
-
 # ╔═╡ a69d104c-84d2-4155-903c-24b36c33c7b1
 @model function linear(X, y)
 	obs, n = shape(X)
 end
 
 # ╔═╡ Cell order:
-# ╠═39fb9179-dd46-430e-8429-c9bb9650f7fd
-# ╠═5404fef6-0ceb-11ef-0c2e-056033a575d4
+# ╟─39fb9179-dd46-430e-8429-c9bb9650f7fd
+# ╟─5404fef6-0ceb-11ef-0c2e-056033a575d4
 # ╟─ac89180b-343a-4b91-92fa-7666b8da3fd3
+# ╟─811af22c-a9f7-45ff-84ec-4e610d5e2d01
 # ╟─8bd28075-76fb-464b-8a65-30f00aa4c58d
 # ╟─3b1dac0c-af04-4292-a023-6da4e3ea3112
 # ╟─57149f6a-a758-4eb2-a6db-db7fd2607195
-# ╟─f2c980d0-10f4-40ec-b7a1-214a8f0ffb1f
 # ╟─b84979a5-e22f-490d-a772-f9830a4fdba1
 # ╟─06da06b7-e983-4b18-89a0-b15095faf2ff
 # ╟─e1a40733-cc33-4b88-9b5d-ad384e7dd39e
-# ╠═811af22c-a9f7-45ff-84ec-4e610d5e2d01
-# ╠═180cea24-d49d-425b-872b-cf4861410627
-# ╠═a69d104c-84d2-4155-903c-24b36c33c7b1
+# ╟─a69d104c-84d2-4155-903c-24b36c33c7b1
+# ╟─9090b3ab-08ad-41e0-a14a-09b628ddbcbe
+# ╟─88914b17-0ca9-42df-bb45-749444917305
+# ╟─f2c980d0-10f4-40ec-b7a1-214a8f0ffb1f
