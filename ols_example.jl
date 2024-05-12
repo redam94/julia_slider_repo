@@ -17,7 +17,7 @@ end
 # ╔═╡ ae9d3cc2-0ff0-11ef-0035-1d0e787b9280
 begin
 	import Pkg
-	Pkg.activate("/home/mattr/Scratch/pluto_slider_repo")
+	Pkg.activate(".")
 	Pkg.add([
 		"PlutoUI", "StatsModels",
 		"GLM", "DataFrames", "StatsBase"
