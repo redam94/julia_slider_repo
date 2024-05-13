@@ -23,6 +23,9 @@ begin
 	])
 end
 
+# ╔═╡ a6f8f3f8-a3b3-49fd-a53a-a4d54539f319
+using Printf
+
 # ╔═╡ 6c37b344-1b74-4a78-a7f3-394e62ca8a8a
 using Colors, LambertW, SpecialFunctions, NLsolve;
 
@@ -190,6 +193,35 @@ md"""
 #### ``\alpha``: $(α), ``\beta``: $(10.0^(-β))
 """
 
+# ╔═╡ c440e8f0-5c17-4d37-a3f1-bfc9f83c3f3e
+let
+	β̂ =1.180534798357645:.01:10
+	α̂ = .8:.001:.95
+
+	fig = plot()
+	true_optimal = lambertw((-1/(β*log(10))),-1)/log(α)
+	
+	for beta in ((-1.0):.001:7.819)[end:-1:1][1:150:end]
+		b = 9 - beta
+		x_n = [lambertw((-1/(b*log(10))),-1)/log(a) for a in α̂]
+		y_n = [eef(xs, α=a, β=10.0^(-b)) for (xs, a) in zip(x_n,α̂)] ./ x_n
+		plot!(x_n, y_n, label="", color=:black)
+	end
+	
+	#plot!(x,y./x, label="Possible ROIs with β=$(10^(9-β))")
+	for alpha in (.8:.01:.95)
+		x_n = [lambertw((-1/(b*log(10))),-1)/log(alpha) for b in β̂]
+		y_n = [eef(xs, α=alpha, β=10.0^(-b)) for (xs, b) in zip(x_n,β̂)] ./ x_n
+		plot!(x_n, y_n, label="", color=:blue)
+	end
+	scatter!([true_optimal], [eef(true_optimal, α=α, β=10.0^(-β))/true_optimal], label="Optimal Point for α=$(α), β=$(@sprintf("%.0f",10.0^(-β)*10^9))")
+	ylabel!("Max ROI Factor")
+	xlabel!("Max ROI Impressions Fraction")
+	xaxis!(xscale=:log10)
+	yaxis!(yscale=:log10)
+	
+end
+
 # ╔═╡ 6804bd6a-bf2c-4432-95f1-c1d765bfa036
 function hill(x; K=20, n=2)
 	return x^n/(x^n+K^n)
@@ -276,7 +308,7 @@ let
 	
 	
 	x = 0:.01:120
-	name = "Hill Function"
+	name = "Logistic Function"
 	p = plot(x, f.(x), ylims=(0, 1), xlims=(0, 120), label=name, linecolor=RGB(0, 0, 139/255))
 	plot!([optimal_point, optimal_point], [0, 1], label="Optimal Point $(round(optimal_point, digits=2))", linestyle=:dash, linecolor=colors["LightBlue"])
 	scatter!([optimal_point], [f(optimal_point)], markercolor=colors["LightBlue"], label="")
@@ -347,10 +379,12 @@ end
 # ╔═╡ Cell order:
 # ╟─7d14f706-cd3e-11ec-07c6-75ef1918e381
 # ╟─4a82e1e6-1fbe-4aad-bc1e-96ce4423c1cb
+# ╟─b7874e3d-fde1-4e10-a538-2547d7a1faea
+# ╟─f0ae0619-b095-490b-8ece-38e1df3e2765
 # ╟─30b8b00d-e484-4a2f-8a14-bb6c6757e682
 # ╟─5d7cfb58-4692-407c-991c-3540b0f6cf71
-# ╟─f0ae0619-b095-490b-8ece-38e1df3e2765
-# ╟─b7874e3d-fde1-4e10-a538-2547d7a1faea
+# ╟─c440e8f0-5c17-4d37-a3f1-bfc9f83c3f3e
+# ╟─a6f8f3f8-a3b3-49fd-a53a-a4d54539f319
 # ╟─0ec2fa7b-0f42-406e-a5c9-fa4ff95d37a5
 # ╟─d6eba7dd-c7d3-4e77-bd94-45175bba93f5
 # ╟─60cb5e1b-a3bc-4dfa-90b6-f93810c71190
