@@ -183,8 +183,8 @@ end
 
 # ╔═╡ 30b8b00d-e484-4a2f-8a14-bb6c6757e682
 md"""
-* ``\alpha``: $(@bind α Slider(.80:.01:.99, default=.9))
-* ``\beta``: $(@bind β Slider(1:.1:13, default=3))
+* ``\alpha``: $(@bind α Slider(.80:.01:.95, default=.9))
+* ``\beta``: $(@bind β Slider(1.180534798357645:.1:10, default=3))
 * Function: $(@bind eef Select([sCurveDoubleExponential => "S_Curve", sCurveDoubleExponentialOrigin => "S_Origin"]))
 """
 
